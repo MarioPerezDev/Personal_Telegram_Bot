@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "botgram": "^2.2.0",
+    "figlet": "^1.2.4",
+    "telegraf": "^3.33.3"
+  },
+  "name": "Ambientabot",
+  "version": "1.0.0",
+  "description": "Simple Telegram Bot",
+  "main": "main.js",
+  "repository": "https://github.com/MarioPerezDev/Personal_Telegram_Bot.git",
+  "author": "MarioPerezDev",
+  "license": "MIT",
+  "private": false
+}
