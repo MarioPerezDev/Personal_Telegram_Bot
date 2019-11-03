@@ -1,10 +1,7 @@
 {
   "dependencies": {
     "botgram": "^2.2.0",
-    "figlet": "^1.2.4",
     "request": "^2.88.0",
-    "telebot": "^1.2.6",
-    "telegraf": "^3.33.3"
   },
   "name": "Ambientabot",
   "scripts": {
