@@ -7,18 +7,19 @@ if (!TELEGRAM_BOT_TOKEN) {
   console.error('Seems like you forgot to pass Telegram Bot Token. I can not proceed...');
   process.exit(1);
 }
+console.log("Ambientabot arrancado con éxito.")
 
 const bot = new Botgram(TELEGRAM_BOT_TOKEN);
+var cities = [];
+function citiesStoring(msg, reply){
+cities.push(msg.text);
+reply.text("Datos de la localización " + msg.text+ " guardados.")
+reply.text("Los datos guardados son: " + cities)
 
-function onMessage(msg, reply) {
-  figlet(msg.text, (err, data) => {
-    if (err) {
-      reply.text('An error occured. Probably text format is not correct.').then();
-      return;
-    }
-    const markdownResult = `${'```\n'}${data}${'\n```'}`;
-    reply.markdown(markdownResult).then();
-  });
 }
 
-bot.text(onMessage);
+bot.command("newlocation", function (msg, reply, next) {
+  console.log("Received a /tiempo command from", msg.from.username);
+  reply.text("¿De qué pueblo o ciudad quiere guardar los datos?")
+  bot.text(citiesStoring);
+});
