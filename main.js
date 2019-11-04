@@ -1,6 +1,6 @@
 const Botgram = require('botgram');
-const figlet = require('figlet');
 let request = require('request');
+var functions = require('./minfunctions.js');
 
 const { TELEGRAM_BOT_TOKEN } = process.env;
 const bot = new Botgram(TELEGRAM_BOT_TOKEN);
@@ -12,7 +12,7 @@ if (!TELEGRAM_BOT_TOKEN) {
 console.log("Ambientabot arrancado con éxito.")
 
 
-var city = "";
+var city = "Madrid";
 let apiKey ='58cc62bd4434bf3238b5327a65df8c0e';
 
 bot.command("start", "help", (msg, reply) =>
@@ -43,18 +43,30 @@ bot.command("weather", (msg, reply, next) => {
   request(url, function (err, response, body) {
     if(err){
       console.log('error:', error);
-      reply.text("Sorry, there has been an error, have you typed your city correctly?");
     } else {
-      let weather = JSON.parse(body)
-      if(weather.main){
-      let message = `It's ${weather.main.temp} degrees in ${weather.name}!`;
-       reply.text(message);
-     }else{
-       reply.text("Sorry, there has been an error, have you typed your city correctly?");
-     }
+      let message = getWeatherMsg(JSON.parse(body));
+      reply.text(message);
     }
   })
 });
+
+function getWeatherMsg(weather){
+  var icon = functions.getIcon(weather.weather[0].icon);
+  var clouds = weather.clouds.all;
+  if(weather.main){
+  let message =
+`${weather.name} weather:
+
+${weather.weather[0].main}(${weather.weather[0].description}${icon}).
+☁️${clouds}%
+🌡${weather.main.temp}º
+[${weather.main.temp_min}º - ${weather.main.temp_max}º]`;
+  return message;
+}else{
+  let message = "Sorry, there has been an error, have you typed your city correctly?"
+  return message;
+}
+}
 
 function onMessage(msg, reply) {
   let message = `${msg.text} is not a supported function.\nTry /help`;

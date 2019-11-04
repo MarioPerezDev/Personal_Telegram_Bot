@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "botgram": "^2.2.0",
-    "request": "^2.88.0",
+    "request": "^2.88.0"
   },
   "name": "Ambientabot",
   "scripts": {
