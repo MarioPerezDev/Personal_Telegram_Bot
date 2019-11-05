@@ -23,13 +23,13 @@ To set a new location, do:
 /location <city>
 To check which is the current location selected, do:
 /currentlocation
-To get the weather of that location, do:
-/weather`))
+To get the current weather of that location, do:
+/currentweather`))
 
 bot.command("location", (msg, reply, next) => {
   console.log("Received a /location command from", msg.from.username);
   city = msg.args(1)
-  reply.text("The new selected city is: \n" + city +".\nTyping /weather will give you the current weather of " +city +".")
+  reply.text("The new selected city is: \n" + city +".\nTyping /currentweather will give you the current weather of " +city +".")
 })
 
 bot.command("currentlocation", (msg, reply, next) => {
@@ -37,9 +37,9 @@ bot.command("currentlocation", (msg, reply, next) => {
   reply.text("The current location selected is: " + city)
 })
 
-bot.command("weather", (msg, reply, next) => {
+bot.command("currentweather", (msg, reply, next) => {
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
-  console.log("Received a /weather command from", msg.from.username);
+  console.log("Received a /currentweather command from", msg.from.username);
   request(url, function (err, response, body) {
     if(err){
       console.log('error:', error);
@@ -50,13 +50,44 @@ bot.command("weather", (msg, reply, next) => {
   })
 });
 
+//In progress
+bot.command("forecast", (msg, reply, next) => {
+  let url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
+  console.log("Received a /forecast command from", msg.from.username);
+  request(url, function (err, response, body) {
+    if(err){
+      console.log('error:', error);
+    } else {
+      let weather = JSON.parse(body)
+      /*
+      let message = getWeatherMsg(weather);
+      */
+      reply.text("Data recorded at " +getTime(weather.list[0].dt));
+    }
+  })
+});
+
+function getTime(dt){
+var date = new Date(dt*1000);
+// Hours part from the timestamp
+var hours = date.getHours();
+// Minutes part from the timestamp
+var minutes = "0" + date.getMinutes();
+// Seconds part from the timestamp
+var seconds = "0" + date.getSeconds();
+
+// Will display time in 10:30:23 format
+var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+return formattedTime;
+}
+
 function getWeatherMsg(weather){
   var icon = functions.getIcon(weather.weather[0].icon);
   var clouds = weather.clouds.all;
   if(weather.main){
   let message =
 `${weather.name} weather:
-
+op
 ${weather.weather[0].main}(${weather.weather[0].description}${icon}).
 ☁️${clouds}%
 🌡${weather.main.temp}º
