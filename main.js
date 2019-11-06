@@ -16,10 +16,13 @@ var city = "Madrid";
 let apiKey ='58cc62bd4434bf3238b5327a65df8c0e';
 
 //Event handler for /start or /help
-bot.command("start", "help", (msg, reply) =>
+bot.command("start", "help", (msg, reply) =>{
+
+var args = msg.args().split(" ");
+if(args[0]===""){
   reply.text(`Greetings 👍,
 I can tell you what's the weather like in a city you must previously select.
-There are only a few commands avaliable:
+There are only a few commands available:
 To set a new location, do:
 /location <city>
 To check which is the current location selected, do:
@@ -27,7 +30,39 @@ To check which is the current location selected, do:
 To get the current weather of that location, do:
 /currentweather
 To get the Forecast for the current day, do:
-/forecast`))
+/forecast <options>
+
+You can get specific help typing /help <command name>,for example:
+/help forecast`)
+}
+if(args[0]==="forecast"){
+  reply.text(`Forecast lets you get a maximum of 3 days forecast.
+You can select from how many days you want to get weather information.
+To get today's forecast, do:
+/forecast
+To get tomorrow's forecast, do:
+/forecast tomorrow
+To get 3 day's forecast, do:
+/forecast all`)
+}
+
+if(args[0]==="location"){
+  reply.text(`Command /location lets you choose the city from which you want to gather weather data.
+Just type /location <city name> and you will choose a new city.`)
+}
+
+if(args[0]==="currentlocation"){
+  reply.text(`Command /currentlocation just returns the name of the current selected city`)
+}
+
+if(args[0]==="currentweather"){
+  reply.text(`Command /currentweather will give you the current weather information from the city you have already selected.
+Just type /currentweather and you will receive the data.`)
+}
+})
+
+
+
 
 //Event handler for /location
 bot.command("location", (msg, reply, next) => {
