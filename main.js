@@ -44,7 +44,7 @@ bot.command("currentweather", (msg, reply, next) => {
     if(err){
       console.log('error:', error);
     } else {
-      let message = getWeatherMsg(JSON.parse(body));
+      let message = getCurrentWeatherMsg(JSON.parse(body));
       reply.text(message);
     }
   })
@@ -58,14 +58,30 @@ bot.command("forecast", (msg, reply, next) => {
     if(err){
       console.log('error:', error);
     } else {
-      let weather = JSON.parse(body)
-      /*
-      let message = getWeatherMsg(weather);
-      */
-      reply.text("Data recorded at " +getTime(weather.list[0].dt));
+      var args = msg.args().split(" ");
+      var weather = JSON.parse(body)
+      //let message = getForecastMsg(weather);
+      for (i = 0; i < getRemainingCounts(); i++) {
+        let item = weather.list[i];
+        reply.text(`Data for ${getTime(item.dt)}:
+${item.main.temp}º`);
+      }
     }
   })
 });
+
+function getCurrentTime(){
+  var today = new Date();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  return time
+}
+
+function getRemainingCounts(){
+  var today = new Date();
+  var remainingCounts = Math.floor((24 - today.getHours())/3)
+  return remainingCounts
+}
+
 
 function getTime(dt){
 var date = new Date(dt*1000);
@@ -81,7 +97,7 @@ var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 return formattedTime;
 }
 
-function getWeatherMsg(weather){
+function getCurrentWeatherMsg(weather){
   var icon = functions.getIcon(weather.weather[0].icon);
   var clouds = weather.clouds.all;
   if(weather.main){
@@ -98,6 +114,25 @@ ${weather.weather[0].main}(${weather.weather[0].description}${icon}).
   return message;
 }
 }
+/*
+function getForecastMsg(weather){
+  var icon = functions.getIcon(weather.weather[0].icon);
+  var clouds = weather.clouds.all;
+  if(weather.main){
+  let message =
+`${weather.name} weather:
+op
+${weather.weather[0].main}(${weather.weather[0].description}${icon}).
+☁️${clouds}%
+🌡${weather.main.temp}º
+[${weather.main.temp_min}º - ${weather.main.temp_max}º]`;
+  return message;
+}else{
+  let message = "Sorry, there has been an error, have you typed your city correctly?"
+  return message;
+}
+}
+*/
 
 function onMessage(msg, reply) {
   let message = `${msg.text} is not a supported function.\nTry /help`;
