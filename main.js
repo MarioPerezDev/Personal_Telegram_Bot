@@ -11,7 +11,7 @@ if (!TELEGRAM_BOT_TOKEN) {
 }
 console.log("Ambientabot arrancado con éxito.")
 
-
+//Madrid is set as the default city
 var city = "Madrid";
 let apiKey ='58cc62bd4434bf3238b5327a65df8c0e';
 
@@ -40,6 +40,8 @@ if(args[0]==="forecast"){
 You can select from how many days you want to get weather information.
 To get today's forecast, do:
 /forecast
+To get tomorro's forecast, do:
+/forecast tomorrow
 To get 5 day's forecast, do:
 /forecast all`)
 }
@@ -58,9 +60,6 @@ if(args[0]==="currentweather"){
 Just type /currentweather and you will receive the data.`)
 }
 })
-
-
-
 
 //Event handler for /location
 bot.command("location", (msg, reply, next) => {
@@ -100,15 +99,9 @@ bot.command("forecast", (msg, reply, next) => {
       var args = msg.args().split(" ");
       var weather = JSON.parse(body)
     }
-
-      reply.text(functions.getForecastMsg(weather, args));
+      reply.text(functions.getForecastMsg(weather,city,args));
   })
 });
-
-
-
-
-
 
 //Event handler for any message received that is not supported by other handlers
 function onMessage(msg, reply) {

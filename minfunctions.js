@@ -61,19 +61,20 @@ function getIcon(iconCode){
   }
 }
 
-exports.getForecastMsg = function(weather, options){
+exports.getForecastMsg = function(weather,city,options){
 let msgTomorrow = "";
-let days=["Today","Tomorrow","day 3", "day 4", "day 5"]
+let days=["TODAY","TOMORROW","DAY 3", "DAY4", "DAY5"]
 let totalmsg=`Information about ${days[0]}
 `;
-let mensaje=`Information about ${days[0]}
+let mensaje=`Information about ${days[0]} in ${city}
 `;
 for (i = 0; i < this.getRemainingCounts(); i++) {
 let item = weather.list[i];
-mensaje = mensaje.concat(`Data for ${getTime(item.dt)}:
+mensaje = mensaje.concat(`- Data for ${getTime(item.dt)}:
+${item.weather[0].main}(${item.weather[0].description})${getIcon(item.weather[0].icon)}
 ${item.main.temp}º
 `)
-totalmsg = totalmsg.concat(`Data for ${getTime(item.dt)}:
+totalmsg = totalmsg.concat(`- Data for ${getTime(item.dt)}:
 ${item.main.temp}º
 `)
 }
@@ -85,27 +86,29 @@ return ("There are no more data for today. \nTry /forecast tomorrow or /forecast
 }
 }
 let tomorrowInitial= 40-(32+(8-this.getRemainingCounts()))
-msgTomorrow=msgTomorrow.concat(`Information about ${days[1]}:
+msgTomorrow=msgTomorrow.concat(`Information about ${days[1]} in ${city}:
 `)
 for(i=tomorrowInitial;i< tomorrowInitial + 8;i++){
   let item = weather.list[i];
-  msgTomorrow = msgTomorrow.concat(`Data for ${getTime(item.dt)}:
-${item.main.temp}º
-`)
+  msgTomorrow = msgTomorrow.concat(`- Data for ${getTime(item.dt)}:
+  ${item.weather[0].main}(${item.weather[0].description})${getIcon(item.weather[0].icon)}
+  ${item.main.temp}º
+  `)
 }
 if(options[0]==="tomorrow"){
   return msgTomorrow;
 }
 
 for(i=1;i < 5; i++){
-totalmsg=totalmsg.concat(`Information about ${days[i]}:
+totalmsg=totalmsg.concat(`Information about ${days[i]} in ${city}:
 `)
 var starter= 40-(8*(5-i)+(8-this.getRemainingCounts()))
 for(j=starter; j < starter+8; j++){
   let item = weather.list[j];
-  totalmsg = totalmsg.concat(`Data for ${getTime(item.dt)}:
-${item.main.temp}º
-`)
+  totalmsg = totalmsg.concat(`- Data for ${getTime(item.dt)}:
+  ${item.weather[0].main}(${item.weather[0].description})${getIcon(item.weather[0].icon)}
+  ${item.main.temp}º
+  `)
 }
 }
 if(options[0]==="all"){
