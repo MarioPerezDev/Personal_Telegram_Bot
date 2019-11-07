@@ -1,4 +1,3 @@
-
 function getIcon(iconCode){
   switch (iconCode) {
     case "01d":
@@ -62,16 +61,59 @@ function getIcon(iconCode){
   }
 }
 
-exports.getForecastMsg = function(weather){
-let mensaje="";
-for (i = 0; i < getRemainingCounts(); i++) {
+exports.getForecastMsg = function(weather, options){
+let msgTomorrow = "";
+let days=["Today","Tomorrow","day 3", "day 4", "day 5"]
+let totalmsg=`Information about ${days[0]}
+`;
+let mensaje=`Information about ${days[0]}
+`;
+for (i = 0; i < this.getRemainingCounts(); i++) {
 let item = weather.list[i];
 mensaje = mensaje.concat(`Data for ${getTime(item.dt)}:
 ${item.main.temp}º
 `)
+totalmsg = totalmsg.concat(`Data for ${getTime(item.dt)}:
+${item.main.temp}º
+`)
 }
+if(options[0]===""){
+if(mensaje)
 return mensaje;
+else{
+return ("There are no more data for today. \nTry /forecast tomorrow or /forecast all")
 }
+}
+let tomorrowInitial= 40-(32+(8-this.getRemainingCounts()))
+msgTomorrow=msgTomorrow.concat(`Information about ${days[1]}:
+`)
+for(i=tomorrowInitial;i< tomorrowInitial + 8;i++){
+  let item = weather.list[i];
+  msgTomorrow = msgTomorrow.concat(`Data for ${getTime(item.dt)}:
+${item.main.temp}º
+`)
+}
+if(options[0]==="tomorrow"){
+  return msgTomorrow;
+}
+
+for(i=1;i < 5; i++){
+totalmsg=totalmsg.concat(`Information about ${days[i]}:
+`)
+var starter= 40-(8*(5-i)+(8-this.getRemainingCounts()))
+for(j=starter; j < starter+8; j++){
+  let item = weather.list[j];
+  totalmsg = totalmsg.concat(`Data for ${getTime(item.dt)}:
+${item.main.temp}º
+`)
+}
+}
+if(options[0]==="all"){
+return totalmsg;
+}
+return ("Something didnt work, did you type the command correctly? Try /help forecast")
+}
+
 
 exports.getCurrentTime = function(){
   var today = new Date();
@@ -79,12 +121,11 @@ exports.getCurrentTime = function(){
   return time
 }
 
-function getRemainingCounts(){
+exports.getRemainingCounts = function(){
   var today = new Date();
   var remainingCounts = Math.floor((24 - today.getHours())/3)
   return remainingCounts
 }
-
 
 function getTime(dt){
 var date = new Date(dt*1000);
@@ -93,10 +134,9 @@ var hours = date.getHours();
 // Minutes part from the timestamp
 var minutes = "0" + date.getMinutes();
 // Seconds part from the timestamp
-var seconds = "0" + date.getSeconds();
 
 // Will display time in 10:30:23 format
-var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+var formattedTime = hours + ':' + minutes.substr(-2);
 return formattedTime;
 }
 

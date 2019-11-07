@@ -36,13 +36,11 @@ You can get specific help typing /help <command name>,for example:
 /help forecast`)
 }
 if(args[0]==="forecast"){
-  reply.text(`Forecast lets you get a maximum of 3 days forecast.
+  reply.text(`Forecast lets you get a maximum of 5 days forecast.
 You can select from how many days you want to get weather information.
 To get today's forecast, do:
 /forecast
-To get tomorrow's forecast, do:
-/forecast tomorrow
-To get 3 day's forecast, do:
+To get 5 day's forecast, do:
 /forecast all`)
 }
 
@@ -101,10 +99,16 @@ bot.command("forecast", (msg, reply, next) => {
     } else {
       var args = msg.args().split(" ");
       var weather = JSON.parse(body)
-      reply.text(functions.getForecastMsg(weather));
     }
+
+      reply.text(functions.getForecastMsg(weather, args));
   })
 });
+
+
+
+
+
 
 //Event handler for any message received that is not supported by other handlers
 function onMessage(msg, reply) {
