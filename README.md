@@ -26,7 +26,7 @@ Insert it on main.js. (line 16 of the code)
 ### 3. `TELEGRAM_BOT_TOKEN=<your bot token> node main.js`
 This will make the bot start working.
 
-##Commands the bot includes
+## Commands the bot includes
 
 ### `/help` or `/help <command name>`
 
