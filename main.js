@@ -13,7 +13,7 @@ console.log("Ambientabot arrancado con éxito.")
 
 //Madrid is set as the default city
 var city = "Madrid";
-let apiKey ='58cc62bd4434bf3238b5327a65df8c0e';
+let apiKey ='';//needs to be completed to work
 
 //Event handler for /start or /help
 bot.command("start", "help", (msg, reply) =>{

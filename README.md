@@ -1,5 +1,7 @@
 This bot was made by Mario Pérez Gil
 
+Uses [openWeather](https://openweathermap.org/) API to work
+
 # Utility
 
 This is a bot that gathers weather data and returns it via chat. You can select the city you want to get the weather from.
@@ -17,7 +19,11 @@ In the project directory, run:
 ### 1. `npm install` or `yarn`
 Installs all the dependencies.
 
-### 2. `TELEGRAM_BOT_TOKEN=<your bot token> node main.js`
+Get your [openWeather](https://openweathermap.org/) API key
+### 2. Insert your openweather API key
+Insert it on main.js. (line 16 of the code)
+
+### 3. `TELEGRAM_BOT_TOKEN=<your bot token> node main.js`
 This will make the bot start working.
 
 ##Commands the bot includes
